@@ -2,7 +2,7 @@
 This project is devoted to construct a dataset of pairs of Figures and Captions extracted from academic papers.
 The papers are extracted from arxiv.org thanks to [arxiv kaggle dataset](https://www.kaggle.com/datasets/Cornell-University/arxiv) and [scypdf](https://github.com/titipata/scipdf_parser) repository, a pdf-parser based on [GROBID](https://github.com/kermitt2/grobid).
 ## How to build the dataset:
-###1. Download the desired arxiv papers
+### 1. Download the desired arxiv papers
 * **Filter papers from arxiv-metadata.json**
 
 That is, downloading the latest version of the file available at https://www.kaggle.com/datasets/Cornell-University/arxiv.
@@ -29,7 +29,7 @@ We can use the download_papers.py script as follows:
 
 We pass the generated txt file with paper ids using the parameter -path, and the project name with -project.
 
-###2. Parse pdf text and figures using GROBID
+### 2. Parse pdf text and figures using GROBID
 
 * **Install and run GROBID service via Docker**
 
