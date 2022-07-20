@@ -11,9 +11,6 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-p', '--path_data', type=str, default=None, required=True,
                     help='Path where the data is stored')
 
-parser.add_argument('-plot', '--plot', type=bool, default=False, required=False,
-                    help='Activate image plotting')
-
 args = parser.parse_args()
 
 
@@ -24,10 +21,23 @@ def compute_processed_files(data_path):
             ids.append(pdf_dir)
     return ids
 
+def retrieve_text_for_figure(figure, paper):
+    captions = []
+
+    # Get figure number
+    figure_num = figure['name']
+
+    # Prepare strings to look in the paper referencing this figure
+    figure_names = [f'fig {figure_num}', f'fig. {figure_num}', f'figure {figure_num}', f'figure. {figure_num}']
+
+    # Prepare paper text
+    for section in paper['sections']:
+        section_text = section['text']
+
 
 def main():
     # Get constants
-    plot_figures = args.plot
+    plot_figures = False
     ROOT_PATH = args.path_data  # ROOT_PATH = "D:/arxiv/CVPR_papers/pdf"
     PARSED_DATA_PATH = os.path.join(ROOT_PATH, 'parsed')
     PROCESSED_DATA_PATH = os.path.join(ROOT_PATH, 'paper2figure')
@@ -41,49 +51,60 @@ def main():
     print("Checking if you have any of the files already downloaded")
     processed_ids = compute_processed_files(PROCESSED_DATA_PATH)
 
+    # Define text filters over caption
+    text_filters = ['model architecture', 'architecture', 'model diagram', 'overview', 'pipeline']
+    text_avoid = ['exampl', 'exampl', 'table', 'result']
+
     counter = 0
     data_list = []
     for pdf_dir in tqdm(os.listdir(PARSED_DATA_PATH)):
+        if pdf_dir in processed_ids:
+            continue
+        # if pdf_dir == '1110.3717':
+        #     print(pdf_dir)
         parsed_pdf_dir = os.path.join(PARSED_DATA_PATH, pdf_dir)
-        child = os.path.join(parsed_pdf_dir, os.listdir(parsed_pdf_dir)[0])
+        pdf_file_name = os.listdir(parsed_pdf_dir)[0]
+        parsed_pdf_dir = os.path.join(parsed_pdf_dir, pdf_file_name)  # Open the dir inside (always one)
 
-    #     for path in os.listdir(parsed_pdf_dir):
-    #         if not path.endswith(".pdf"):
-    #             # Open json file eith figures data
-    #             try:  # This is if for some reason the json file is not there (To do: compute it from erro_filter.txt)
-    #                 with open(os.path.join(parsed_pdf_dir, path, 'figures_metadata', path + ".json"), "r") as f:
-    #                     data = json.load(f)
-    #             except:
-    #                 with open("error_filter.txt", "a") as f:
-    #                     f.write(path + "\n")
-    #                 continue
-    #             # Read the captions and filter the ones that have a text of "method" or "model"
-    #             for figure in data:
-    #                 if figure['figType'] == "Figure":
-    #
-    #                     if "model architecture" in figure["caption"].lower() or "model diagram" in figure[
-    #                         "caption"].lower() or "overview" in figure["caption"].lower() or "pipeline" in figure[
-    #                         "caption"].lower():
-    #                         if plot_figures:
-    #                             print(figure['caption'])
-    #                             im = cv2.imread(figure['renderURL'])
-    #                             cv2.imshow('image', im)
-    #                             cv2.waitKey(0)
-    #                         # Retrieve data from paper related to figure
-    #                         with open(os.path.join(parsed_pdf_dir, path, path + ".json"), "r") as f:
-    #                             paper_data = json.load(f)
-    #                         paper = {"paper_id": pdf_dir,
-    #                                  "title": paper_data["title"],
-    #                                  "authors": paper_data["authors"],
-    #                                  "abstract": paper_data["abstract"],
-    #                                  "sections": paper_data["sections"], }
-    #                         data_list.append({
-    #                             "figure_id": counter,
-    #                             "figure_path": figure['renderURL'].split("CVPR_papers")[1],
-    #                             "caption": figure['caption'],
-    #                             "paper": paper
-    #                         })
-    #                         counter += 1
+        # Load json file regarding figures
+        try:  # if for some reason the json file is not there
+            with open(os.path.join(parsed_pdf_dir, 'figures_metadata', pdf_file_name + ".json"), "r") as f:
+                data = json.load(f)
+            with open(os.path.join(parsed_pdf_dir, pdf_file_name + ".json"), "r") as f:
+                paper_data = json.load(f)
+        except:
+            with open(os.path.join(OUT_PATH, "error_log_build_dataset.txt"), "a") as f:
+                f.write(pdf_file_name + "\n")
+            continue
+
+        # Read the captions and filter the ones that have a text of "method" or "model"
+        for figure in data:
+
+            # Filter figures
+            if figure['figType'] == "Figure":
+                # Filter figures with desired text in caption
+                if any(text_filter in figure["caption"].lower() for text_filter in text_filters) and not any(
+                        avoid in figure["caption"].lower() for avoid in text_avoid):
+                    im = cv2.imread(figure['renderURL'])
+                    aspect = im.shape[1] / im.shape[0]
+                    if 2 > aspect > 0.5:
+                        # Retrieve data from paper related to figure
+
+                        if plot_figures:
+                            cv2.imshow(figure["caption"].lower() + " , aspect=" + str(aspect), im)
+                            cv2.waitKey(0)
+                            cv2.destroyAllWindows()
+
+                        # Retrieve all sentences that describe that figure in the paper
+                        captions = retrieve_text_for_figure(figure, paper_data)
+                        captions = []
+                        captions.append(figure['caption']) # Add the actual caption
+                        data_list.append({
+                            "figure_id": counter,
+                            "figure_path": figure['renderURL'],
+                            "captions": captions,
+                        })
+                        counter += 1
     #
     # # Split data in train and test
     # import random
@@ -97,7 +118,7 @@ def main():
     # with open("test_data.json", "w") as f:
     #     json.dump(test_data, f)
     #
-    # print("Number of figures: ", counter)
+    print("Number of figures: ", counter)
 
 
 if __name__ == '__main__':
