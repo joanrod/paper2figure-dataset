@@ -55,3 +55,7 @@ At the end, you should have the following structure:
     │   ├── pdf
     │   └── parsed
     └── ...
+
+### 2. Build Paper2Fig dataset
+
+    python paper2fig_multiprocessing.py -p [dataset dir]
