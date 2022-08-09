@@ -19,9 +19,10 @@ def compute_parsed_files(data_path):
     for pdf_dir in tqdm(os.listdir(data_path)):
         pdf_dir_path = os.path.join(data_path, pdf_dir)
         child_dir = os.listdir(os.path.join(data_path, pdf_dir))[0]
-
-        if has_files(os.path.join(pdf_dir_path, child_dir, 'figures_metadata')):
-            ids.append(pdf_dir)
+        figures_path = os.path.join(pdf_dir_path, child_dir, 'figures_metadata')
+        if os.path.exists(figures_path):
+            if has_files(figures_path):
+                ids.append(pdf_dir)
 
     with open(os.path.join('output', 'error_log_grobid.txt'), 'r') as f:
         error_ids = f.readlines()
