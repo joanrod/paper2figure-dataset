@@ -1,24 +1,14 @@
 from __future__ import annotations
 
+import argparse
+import json
 import multiprocessing as mp
 import os
-
-import numpy as np
-from tqdm import tqdm
-import time
-
-import random
-from dataclasses import dataclass
-import json
-import os
+import timeit
+from pathlib import Path
 
 import cv2
 from tqdm import tqdm
-import argparse
-from util import has_files
-from pathlib import Path
-import timeit
-import matplotlib.pyplot as plt
 
 start = timeit.default_timer()
 # Argument parsing
@@ -28,7 +18,7 @@ parser.add_argument('-p', '--path_data', type=str, default=None, required=True,
 
 args = parser.parse_args()
 
-ROOT_PATH = args.path_data  # ROOT_PATH = "D:/arxiv/CVPR_papers"
+ROOT_PATH = args.path_data
 PARSED_DATA_PATH = os.path.join(ROOT_PATH, 'parsed')  # Already parsed by Grobid
 PROCESSED_DATA_PATH = os.path.join(ROOT_PATH, 'paper2figure')
 JSON_DIR = os.path.join(PROCESSED_DATA_PATH, 'json_data')
@@ -46,8 +36,11 @@ text_filters = [
 
 text_avoid = ['exampl', 'table', '=', '>', '<', 'methods', 'comparison', 'compare', 'ablation']
 
+# Test if we can find architecture types from text (not used for now)
+# TO DO: Use a clustering technique to obtain the classes
 architecture_types = {
-    'cnn': ['cnn', 'convolutional', 'convnet', 'conv2d', 'resnet', 'vgg', 'mobilenet', 'efficientnet', 'inceptionV', 'alexnet'],
+    'cnn': ['cnn', 'convolutional', 'convnet', 'conv2d', 'resnet', 'vgg', 'mobilenet', 'efficientnet', 'inceptionV',
+            'alexnet'],
     'rnn': ['rnn', 'recurrent neural', ' gru ', '(gru)'],
     'lstm': ['lstm', 'long-short term'],
     'transformer': ['transformer', ' bert ', ' bart ', 't5', 'self-attention', 'cross-attention'],
@@ -64,7 +57,6 @@ architecture_types = {
     'difusion': ['diffusion'],
     'distillation': ['teacher network', 'student network', 'distill'],
     'graph': ['gnn', '(gnn)', 'graph neural network', 'graph network'],
-
 }
 
 
@@ -149,13 +141,6 @@ def process_pdf(paper):
                 try:
                     im = cv2.imread(figure['renderURL'])
                     aspect = im.shape[1] / im.shape[0]
-
-                    # Compute a histogram to filter wrong figures
-                    #
-                    # plt.figure()
-                    #
-                    # plt.subplot(1, 2, 1)
-                    # plt.imshow(im)
 
                     image_color = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
                     hist = cv2.calcHist([image_color], [0], None, [16], [0, 256])

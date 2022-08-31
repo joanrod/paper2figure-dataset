@@ -1,25 +1,9 @@
-from __future__ import annotations
 
-import multiprocessing as mp
-import os
-
-import numpy as np
-from tqdm import tqdm
-import time
-
-import random
-from dataclasses import dataclass
-import json
-import os
-
-import cv2
-from tqdm import tqdm
 import argparse
-from util import has_files
-from pathlib import Path
-import timeit
-import matplotlib.pyplot as plt
+import os
 
+from tqdm import tqdm
+import matplotlib.pyplot as plt
 # Argument parsing
 parser = argparse.ArgumentParser()
 parser.add_argument('-p', '--path_data', type=str, default=None, required=True,
@@ -34,20 +18,33 @@ JSON_DIR = os.path.join(PROCESSED_DATA_PATH, 'json_data')
 IMAGES_DIR = os.path.join(PROCESSED_DATA_PATH, 'figures')
 OUT_PATH = 'output'
 
+import seaborn as sns
 
 def main() -> None:
-    counter = 0
-    for paper in tqdm(os.listdir(PARSED_DATA_PATH)):
-        try:
-            pdf_dir = os.path.join(PARSED_DATA_PATH, paper)
-            pdf_file_name = os.listdir(pdf_dir)[0]
+    # Read txt files
+    path = 'output'
+    splits = ["train", "test"]
+    list_samples = []
+    for split in splits:
 
-            figures_dir = os.path.join(pdf_dir, pdf_file_name, 'figures')  # Open the dir inside (always one)
-            for figure in os.listdir(figures_dir):
-                counter += 1
-        except:
-            continue
-    print(counter)
+        with open(os.path.join(path, 'paper2fig1_img_' + split + ".txt"), "r") as f:
+            data = f.read().splitlines()
+        list_samples += data
+    dict_year_count = {}
+    [dict_year_count.setdefault(i, 0) for i in range(10, 23)]
+    for p in tqdm(list_samples):
+        yymm = p.split("/")[-1].split("v")[0].split(".")[0]
+        yy = yymm[:2]
+        dict_year_count[int(yy)] += 1
+        # mm = yymm[2:]
+
+    print(dict_year_count)
+    plt.bar(*zip(*dict_year_count.items()))
+    plt.xlabel("Year")
+    plt.ylabel("number of figures")
+    # Show the plot
+    plt.show()
+
 
 if __name__ == "__main__":
     main()

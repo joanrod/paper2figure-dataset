@@ -57,5 +57,7 @@ At the end, you should have the following structure:
     └── ...
 
 ### 2. Build Paper2Fig dataset
+The last step is to perform heuristic rules to filter images and obtain texts. This is done using multiprocessing, 
+and can be executed with:
 
     python paper2fig_multiprocessing.py -p [dataset dir]
