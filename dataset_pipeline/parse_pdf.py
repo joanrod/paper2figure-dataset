@@ -1,9 +1,13 @@
+# File: parse_pdf.py
+# Goal: (Step 3) - Parse pdfs using grobid, storing figures and texts from papers
+
+# TODO: Add GPU and parallelization capabilities
+
 import os
 import scipdf
 import json
 from tqdm import tqdm
 import argparse
-
 from util import has_files
 
 # Argument parsing

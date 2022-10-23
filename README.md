@@ -51,7 +51,7 @@ We can use the `dataset_pipeline/download_papers.py` script as follows:
 python dataset_pipeline/download_papers.py --paper_ids <path to txt file> --project <Google Cloud project> --out_path <path store pdfs>
 ````
 
-where we pass the generated .txt file with paper ids using the parameter -path, and the project name with `--project`.
+where we pass the generated .txt file with paper ids using the parameter `--paper_ids`, the project name with `--project`, and the output path with `--out_path`, for pdf storage.
 
 ### 2. Parse pdf text and figures using GROBID
 In this process, we need to parse and organize the texts and images that are contained in each pdf. We make use of **GROBID** and **SciPdf** to parse images and texts.
@@ -87,9 +87,9 @@ At the end, you should have the following structure:
 └── ...
 ```
 
-### 2. Build Paper2Fig dataset
-The last step is to perform heuristic rules to filter images and obtain texts. This is done using multiprocessing, and can be executed with:
+### 2. Construct Paper2Fig dataset
+The last step is to apply heuristic rules to filter images and obtain text captions of figures. This is done using multiprocessing, and can be executed with:
 
 ```
-python paper2fig_multiprocessing.py -p [dataset dir]
+python dataset_pipeline/construct_dataset.py -p <dataset dir>
 ```

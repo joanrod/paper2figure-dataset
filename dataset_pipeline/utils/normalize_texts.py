@@ -3,7 +3,12 @@ import json
 import re
 # Note: This logic should be added to the pipeline (the latest code is in local, not here)
 
-ROOT_PATH = "/mnt/colab_public/datasets/joan/arxiv/Paper2Fig100k"
+# Argument parsing
+parser = argparse.ArgumentParser()
+parser.add_argument('-p', '--path_data', type=str, default=None, required=True,
+                    help='Path where the data is stored')
+args = parser.parse_args()
+ROOT_PATH = args.path_data
 
 def normalize_caption(text):
     lower_string = text.lower()

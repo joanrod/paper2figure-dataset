@@ -1,24 +1,15 @@
-from __future__ import annotations
+# File: generate_splits.py
+# Goal: (Step 4) - Perform the split of the dataset and store in train and val json files
 
+import argparse
+import json
 import multiprocessing as mp
 import os
-
-import numpy as np
-from tqdm import tqdm
-import time
-
-import random
-from dataclasses import dataclass
-import json
-import os
+import timeit
+from pathlib import Path
 
 import cv2
 from tqdm import tqdm
-import argparse
-from util import has_files
-from pathlib import Path
-import timeit
-import matplotlib.pyplot as plt
 
 start = timeit.default_timer()
 # Argument parsing
@@ -28,7 +19,7 @@ parser.add_argument('-p', '--path_data', type=str, default=None, required=True,
 
 args = parser.parse_args()
 
-ROOT_PATH = args.path_data 
+ROOT_PATH = args.path_data
 PARSED_DATA_PATH = os.path.join(ROOT_PATH, 'parsed')  # Already parsed by Grobid
 PROCESSED_DATA_PATH = os.path.join(ROOT_PATH, 'paper2figure')
 JSON_DIR = os.path.join(PROCESSED_DATA_PATH, 'json_data')
@@ -46,8 +37,11 @@ text_filters = [
 
 text_avoid = ['exampl', 'table', '=', '>', '<', 'methods', 'comparison', 'compare', 'ablation']
 
+# Test if we can find architecture types from text (not used for now)
+# TO DO: Use a clustering technique to obtain the classes
 architecture_types = {
-    'cnn': ['cnn', 'convolutional', 'convnet', 'conv2d', 'resnet', 'vgg', 'mobilenet', 'efficientnet', 'inceptionV', 'alexnet'],
+    'cnn': ['cnn', 'convolutional', 'convnet', 'conv2d', 'resnet', 'vgg', 'mobilenet', 'efficientnet', 'inceptionV',
+            'alexnet'],
     'rnn': ['rnn', 'recurrent neural', ' gru ', '(gru)'],
     'lstm': ['lstm', 'long-short term'],
     'transformer': ['transformer', ' bert ', ' bart ', 't5', 'self-attention', 'cross-attention'],
@@ -64,7 +58,6 @@ architecture_types = {
     'difusion': ['diffusion'],
     'distillation': ['teacher network', 'student network', 'distill'],
     'graph': ['gnn', '(gnn)', 'graph neural network', 'graph network'],
-
 }
 
 
@@ -117,14 +110,11 @@ def retrieve_text_for_figure(figure, paper, caption):
 
     # Insert caption at start
     captions.insert(0, figure['caption'])  # Add the actual caption at [0]
-
     return captions, types
-
 
 def process_pdf(paper):
     pdf_dir = os.path.join(PARSED_DATA_PATH, paper)
     pdf_file_name = os.listdir(pdf_dir)[0]
-
     parsed_pdf_dir = os.path.join(pdf_dir, pdf_file_name)  # Open the dir inside (always one)
 
     # Load json file regarding figures
@@ -149,13 +139,6 @@ def process_pdf(paper):
                 try:
                     im = cv2.imread(figure['renderURL'])
                     aspect = im.shape[1] / im.shape[0]
-
-                    # Compute a histogram to filter wrong figures
-                    #
-                    # plt.figure()
-                    #
-                    # plt.subplot(1, 2, 1)
-                    # plt.imshow(im)
 
                     image_color = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
                     hist = cv2.calcHist([image_color], [0], None, [16], [0, 256])
@@ -196,23 +179,29 @@ def compute_processed_files(papers_to_process):
 
 
 def main() -> None:
-    splits = ['train', 'test']
-    for split in splits:
+    # Create folder for json data and images data
+    if not os.path.exists(JSON_DIR):
+        os.makedirs(JSON_DIR)
+    if not os.path.exists(IMAGES_DIR):
+        os.makedirs(IMAGES_DIR)
 
-        json_data_path = os.path.join(ROOT_PATH, split+'_data.json')
-        # prepare
-        with open(json_data_path, "r") as f:
-                data = json.load(f)
+    # prepare
+    print("Preparing I: Counting papers to process")
+    papers_to_process = []
+    for paper in tqdm(os.listdir(PARSED_DATA_PATH)):
+        papers_to_process.append(paper)
 
-        for paper in data:
-            captions = ""
-        # with mp.Pool(processes=MAX_WORKERS) as p:
-        #     count_images = list(
-        #         tqdm(p.imap(process_pdf, papers_to_process, CHUNK_SIZE), total=len(papers_to_process)))
+    # compute already computed papers
+    print("Preparing II: Counting papers already processed")
+    papers_to_process = compute_processed_files(papers_to_process)
 
-        stop = timeit.default_timer()
+    with mp.Pool(processes=MAX_WORKERS) as p:
+        count_images = list(
+            tqdm(p.imap(process_pdf, papers_to_process, CHUNK_SIZE), total=len(papers_to_process)))
 
-        print('Time: ', stop - start)
+    stop = timeit.default_timer()
+
+    print('Time: ', stop - start)
 
 
 if __name__ == "__main__":

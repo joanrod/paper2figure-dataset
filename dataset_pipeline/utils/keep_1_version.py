@@ -1,17 +1,16 @@
 import os
 from tqdm import tqdm
 
-# os.listdir(os.path.join(data_path, pdf_dir))[0]
+# TO DO: Add this to download process
+
+# Argument parsing
+parser = argparse.ArgumentParser()
+parser.add_argument('-p', '--path_data', type=str, default=None, required=True,
+                    help='Path where the data is stored')
+args = parser.parse_args()
+ROOT_PATH = args.path_data  
+
 def main():
-    # Argument parsing
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-p', '--path_data', type=str, default=None, required=True,
-                        help='Path where the data is stored')
-
-    args = parser.parse_args()
-
-    ROOT_PATH = args.path_data  
-
     for pdf_dir in tqdm(os.listdir(ROOT_PATH)):
         # Keep only last version of the paper
         versions = []

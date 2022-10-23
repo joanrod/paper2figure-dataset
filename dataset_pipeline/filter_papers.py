@@ -1,42 +1,35 @@
+# File: filter_papers.py
+# Goal: (Step 1) - Filter desired papers from arxiv using the kaggle dataset paper metadata
 
 import argparse
 import json
 import os
-
 import pandas as pd
 
 # Argument parsing
 parser = argparse.ArgumentParser()
 parser.add_argument('-s', '--subjects', type=str, default=None,
                     help='List of arxiv subjects')
-
 parser.add_argument('-m', '--month', type=str, default='01',
                     help='Begin from this month')
-
 parser.add_argument('-y', '--year', type=str, default='20',
                     help='Begin from this year')
-
 parser.add_argument('-p', '--path_json', type=str, default=None, required=True,
                     help='path of metadata json file')
-
 parser.add_argument('--export_xlsx', type=bool, default=True,
                     help='Boolean to export into xlsx')
-
 args = parser.parse_args()
-
 
 def get_metadata(data_file):
     with open(data_file, 'r') as f:
         for line in f:
             yield line
 
-
 def str2list(string):
     li = []
     for s in string.split(","):
         li.append(s)
     return li
-
 
 def date_in_range(year_month, year_month_filter):
     # Parse inputs
@@ -55,7 +48,6 @@ def date_in_range(year_month, year_month_filter):
     elif y == y_filter and m >= m_filter:  # In case its same year, check if month is equal or higher
         return True
     return False
-
 
 def main():
     # Parse args

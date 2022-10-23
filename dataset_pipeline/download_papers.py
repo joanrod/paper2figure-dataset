@@ -1,8 +1,10 @@
+# File: download_papers.py
+# Goal: (Step 2) - Download the desired papers
+
 from google.cloud import storage
 import os
 import argparse
 from tqdm import tqdm
-
 from util import has_files
 
 # Argument parsing
@@ -49,6 +51,7 @@ def main():
 
         blobs = bucket.list_blobs(prefix='arxiv/arxiv/' + download_format + '/' + yymm + '/' + id)
         for blob in blobs:
+            # TO DO: Download only earliest version
             out_dir = OUT_PATH + id + '/'
             if not os.path.exists(out_dir):
                 os.mkdir(out_dir)
