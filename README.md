@@ -1,7 +1,29 @@
-# Paper2Figure dataset
-This project is devoted to construct a dataset of pairs of Figures and Captions extracted from academic papers.
-The papers are extracted from arxiv.org thanks to [arxiv kaggle dataset](https://www.kaggle.com/datasets/Cornell-University/arxiv) and [scypdf](https://github.com/titipata/scipdf_parser) repository, a pdf-parser based on [GROBID](https://github.com/kermitt2/grobid).
-## How to build the dataset:
+# Paper2Fig dataset
+### [OCR-VQGAN: Taming Text-within-Image Generation](https://arxiv.org/abs/2210.11248)
+[![arXiv](https://img.shields.io/badge/arXiv-Paper-<COLOR>.svg)](https://arxiv.org/abs/2210.11248)
+
+<br>
+
+
+[Juan A. Rodríguez](https://scholar.google.es/citations?user=0selhb4AAAAJ&hl=en), [David Vázquez](https://scholar.google.es/citations?user=1jHvtfsAAAAJ&hl=en), [Issam Laradji](https://scholar.google.ca/citations?user=8vRS7F0AAAAJ&hl=en), [Marco Pedersoli](https://scholar.google.com/citations?user=aVfyPAoAAAAJ&hl=en), [Pau Rodríguez](https://scholar.google.com/citations?user=IwBx73wAAAAJ)
+
+-----------
+[Computer Vision Center, Autonomous University of Barcelona](http://www.cvc.uab.es/)
+
+[ServiceNow Research, Montréal, Canada](https://www.servicenow.com/research/)
+
+[ÉTS Montreal, University of Québec](https://www.etsmtl.ca/)
+
+------------------
+
+This project is devoted to construct a dataset of pairs of Figures and Captions extracted from research papers, named **Paper2Fig**. The current version of the dataset is [**Paper2Fig100k, presented in this paper**](https://arxiv.org/abs/2210.11248).
+
+The papers are extracted from arXiv.org thanks to [arxiv kaggle dataset](https://www.kaggle.com/datasets/Cornell-University/arxiv) and [scypdf](https://github.com/titipata/scipdf_parser) repository, a pdf-parser based on [GROBID](https://github.com/kermitt2/grobid).
+
+>Check out our work [**OCR-VQGAN**](https://www.github.com/joanrod/ocr-vqgan) project, which presents an image encoder especialized in the image domains of figures and diagrams using Paper2Fig100k dataset.
+-------------------
+
+## Dataset construction pipeline:
 ### 1. Download the desired arxiv papers
 * **Filter papers from arxiv-metadata.json**
 

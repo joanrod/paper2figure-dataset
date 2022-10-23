@@ -28,7 +28,7 @@ parser.add_argument('-p', '--path_data', type=str, default=None, required=True,
 
 args = parser.parse_args()
 
-ROOT_PATH = args.path_data  # ROOT_PATH = "D:/arxiv/CVPR_papers"
+ROOT_PATH = args.path_data 
 PARSED_DATA_PATH = os.path.join(ROOT_PATH, 'parsed')  # Already parsed by Grobid
 PROCESSED_DATA_PATH = os.path.join(ROOT_PATH, 'paper2figure')
 JSON_DIR = os.path.join(PROCESSED_DATA_PATH, 'json_data')
@@ -196,29 +196,23 @@ def compute_processed_files(papers_to_process):
 
 
 def main() -> None:
-    # Create folder for json data and images data
-    if not os.path.exists(JSON_DIR):
-        os.makedirs(JSON_DIR)
-    if not os.path.exists(IMAGES_DIR):
-        os.makedirs(IMAGES_DIR)
+    splits = ['train', 'test']
+    for split in splits:
 
-    # prepare
-    print("Preparing I: Counting papers to process")
-    papers_to_process = []
-    for paper in tqdm(os.listdir(PARSED_DATA_PATH)):
-        papers_to_process.append(paper)
+        json_data_path = os.path.join(ROOT_PATH, split+'_data.json')
+        # prepare
+        with open(json_data_path, "r") as f:
+                data = json.load(f)
 
-    # compute already computed papers
-    print("Preparing II: Counting papers already processed")
-    papers_to_process = compute_processed_files(papers_to_process)
+        for paper in data:
+            captions = ""
+        # with mp.Pool(processes=MAX_WORKERS) as p:
+        #     count_images = list(
+        #         tqdm(p.imap(process_pdf, papers_to_process, CHUNK_SIZE), total=len(papers_to_process)))
 
-    with mp.Pool(processes=MAX_WORKERS) as p:
-        count_images = list(
-            tqdm(p.imap(process_pdf, papers_to_process, CHUNK_SIZE), total=len(papers_to_process)))
+        stop = timeit.default_timer()
 
-    stop = timeit.default_timer()
-
-    print('Time: ', stop - start)
+        print('Time: ', stop - start)
 
 
 if __name__ == "__main__":
