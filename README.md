@@ -20,7 +20,7 @@ This project is devoted to construct a dataset of pairs of Figures and Captions 
 
 The papers are extracted from arXiv.org thanks to [arxiv kaggle dataset](https://www.kaggle.com/datasets/Cornell-University/arxiv) and [scypdf](https://github.com/titipata/scipdf_parser) repository, a pdf-parser based on [GROBID](https://github.com/kermitt2/grobid).
 
->Check out our work [**OCR-VQGAN**](https://www.github.com/joanrod/ocr-vqgan) project, which presents an image encoder especialized in the image domains of figures and diagrams using Paper2Fig100k dataset.
+>Check out our work [**OCR-VQGAN**](https://www.github.com/joanrod/ocr-vqgan), which presents an image encoder especialized in the image domains of figures and diagrams using Paper2Fig100k dataset.
 -------------------
 
 ## Dataset construction pipeline:
