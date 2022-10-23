@@ -1,3 +1,6 @@
+# File: generate_splits.py
+# Goal: Perform the split of the dataset and store in train and val json files
+
 import json
 import os
 import pandas as pd
@@ -14,7 +17,7 @@ parser.add_argument('-p', '--path_data', type=str, default=None, required=True,
 
 args = parser.parse_args()
 
-ROOT_PATH = args.path_data  # ROOT_PATH = "D:/arxiv/CVPR_papers"
+ROOT_PATH = args.path_data  
 PARSED_DATA_PATH = os.path.join(ROOT_PATH, 'parsed')  # Already parsed by Grobid
 PROCESSED_DATA_PATH = os.path.join(ROOT_PATH, 'paper2figure')
 JSON_DIR = os.path.join(PROCESSED_DATA_PATH, 'json_data')

@@ -1,3 +1,6 @@
+# File: assign_class_tags.py
+# Goal: asign class tags to each figure from texts, and plot statistics
+
 import argparse
 import json
 import os
@@ -10,6 +13,7 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 
 start = timeit.default_timer()
+
 # Argument parsing
 parser = argparse.ArgumentParser()
 parser.add_argument('-p', '--path_data', type=str, default=None, required=True,
@@ -32,7 +36,7 @@ def normalize_text(text):
     no_wspace_string = no_punc_string.strip()
     return no_wspace_string
 
-
+# This tags are obtained after a word-frequency analysis on captions
 architecture_types = {
     'cnn': ['cnn', 'convolutional', 'convnet', 'convolution', 'conv2d', 'resnet', 'vgg', 'mobilenet', 'efficientnet',
             'inceptionV', 'conv', 'kernels',
