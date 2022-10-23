@@ -7,15 +7,13 @@ from util import has_files
 
 # Argument parsing
 parser = argparse.ArgumentParser()
-
-parser.add_argument('-project', '--project', type=str, default=None, required=True,
+parser.add_argument('-p', '--project', type=str, default=None, required=True,
                     help='Name of Google Cloud project')
-
+parser.add_argument('--paper_ids', type = str, default=None, required=True,
+                    help = 'path to the .txt file with the paper ids to download')
 parser.add_argument('-out', '--out_path', type=str, default=None, required=True,
-                    help='Path where the data will be stored (careful, choose a large device')
-
+                    help='Path where the data will be stored (careful, choose a path with sufficient disk space')
 args = parser.parse_args()
-
 
 def compute_downloaded_files(data_path):
     ids = []
@@ -33,16 +31,14 @@ def main():
     with open(os.path.join(args.out_path, 'paper_ids.txt'), 'r') as f:
         ids = f.readlines()
 
-    download_format = 'pdf'  # 'pdf' or 'ps'
+    download_format = 'pdf'
     OUT_PATH = args.out_path + "/paper2figure_dataset/" + download_format + "/"
+    os.makedirs(OUT_PATH, exists_ok = True)
 
     # Remove downloaded ids from list
     print("Checking if you have any of the files already downloaded")
     downloaded_ids = compute_downloaded_files(OUT_PATH)
-
-    # Create OUT_PATH if it does not exist
-    if not os.path.exists(OUT_PATH):
-        os.makedirs(OUT_PATH)
+    
     print("Downloading papers...")
     for id in tqdm(ids):
         id = id.rstrip()

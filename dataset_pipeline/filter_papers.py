@@ -19,8 +19,8 @@ parser.add_argument('-y', '--year', type=str, default='20',
 parser.add_argument('-p', '--path_json', type=str, default=None, required=True,
                     help='path of metadata json file')
 
-parser.add_argument('--export_excel', type=bool, default=True,
-                    help='Boolean to export into excel')
+parser.add_argument('--export_xlsx', type=bool, default=True,
+                    help='Boolean to export into xlsx')
 
 args = parser.parse_args()
 
@@ -69,8 +69,7 @@ def main():
 
     # Create output directory
     OUTPUT_PATH = 'output'
-    if not os.path.exists(OUTPUT_PATH):
-        os.makedirs(OUTPUT_PATH)
+    os.makedirs(OUTPUT_PATH, exists_ok = True)
 
     # Lists for relevant fields
     titles = []

@@ -39,10 +39,10 @@ def main():
     ROOT_PATH = args.path_data
     PDF_DATA_PATH = os.path.join(ROOT_PATH, 'pdf')
     PARSED_DATA_PATH = os.path.join(ROOT_PATH, 'parsed')
-    # Create dir
-    if not os.path.exists(PARSED_DATA_PATH):
-        os.makedirs(PARSED_DATA_PATH)
     OUT_PATH = 'output'
+
+    # Create dir
+    os.makedirs(PARSED_DATA_PATH, exists_ok = True)
 
     # Remove downloaded ids from list
     print("Checking if you have any of the files already downloaded")
