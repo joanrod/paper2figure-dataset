@@ -14,13 +14,13 @@
 
 ------------------
 
-This project is devoted to construct a dataset of pairs of Figures and Captions extracted from research papers, named **Paper2Fig**. The current version of the dataset is [**Paper2Fig100k, presented in this paper**](https://arxiv.org/abs/2210.11248).
+This project is devoted to construct a dataset of pairs of Figures and Captions extracted from research papers, which we call **Paper2Fig**. The current version of the dataset is [**Paper2Fig100k, presented in this paper**](https://arxiv.org/abs/2210.11248). The following are some samples from the dataset.
 
 <p align="center">
   <a href="https://arxiv.org/abs/2209.xxxx"><img src="assets/figures.png" alt="comparison" width="800" border="0"></a>
 </p>
 
-The papers are extracted from arXiv.org thanks to [arxiv kaggle dataset](https://www.kaggle.com/datasets/Cornell-University/arxiv) and [scypdf](https://github.com/titipata/scipdf_parser) repository, a pdf-parser based on [GROBID](https://github.com/kermitt2/grobid).
+Here we present the pipeline designed to construct Paper2Fig dataset using public research papers generally from Computer Science fields like Machine Learning or Computer Vision. The papers are downloaded from arXiv.org thanks to [arxiv kaggle dataset](https://www.kaggle.com/datasets/Cornell-University/arxiv) and [scypdf](https://github.com/titipata/scipdf_parser) repository, a pdf-parser based on [GROBID](https://github.com/kermitt2/grobid). 
 
 >Check out our work [**OCR-VQGAN**](https://www.github.com/joanrod/ocr-vqgan), which presents an image encoder especialized in the image domains of figures and diagrams using Paper2Fig100k dataset.
 -------------------
