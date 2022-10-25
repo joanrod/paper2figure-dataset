@@ -1,5 +1,5 @@
 # File: parse_pdf.py
-# Goal: (Step 3) - Parse pdfs using grobid, storing figures and texts from papers
+# Goal: (Step 2.1) - Parse pdfs using grobid, storing figures and texts from papers
 
 # TODO: Add GPU and parallelization capabilities
 

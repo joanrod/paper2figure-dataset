@@ -89,9 +89,40 @@ At the end, you should have the following structure:
 └── ...
 ```
 
-### 2. Construct Paper2Fig dataset
-The last step is to apply heuristic rules to filter images and obtain text captions of figures. This is done using multiprocessing, and can be executed with:
+## 3. Apply heuristics to filter diagram figures for Paper2Fig dataset
+In this step we apply heuristic rules to filter images (avoid results figures like plots, charts, etc.) and obtain text captions of figures. This is done using multiprocessing, and can be executed with:
+
+```
+python dataset_pipeline/apply_heuristics.py -p <dataset dir>
+```
+
+## 4. Perform OCR over Figures
+In this step we process the final set of firures with [EasyOCR](https://github.com/JaidedAI/EasyOCR) text recognizer.
+
+```
+pip install easyocr
+python dataset_pipeline/apply_ocr.py -p <dataset dir>
+```
+
+## 4. Construct Paper2Fig dataset
+Now it's time to put it all together, generating the final dataset using a JSON structure. Also, the split of the dataset in train and test is performed with:
 
 ```
 python dataset_pipeline/construct_dataset.py -p <dataset dir>
 ```
+
+In Paper2Fig, each figure has a json object associated that contains the following information:
+
+```json
+{
+  "figure_id": "...", 
+  "captions": ["...", "..."], 
+  "ocr_result": [{
+    "text": "...", 
+    "bbox": "[[71, 18], [134, 18], [134, 44], [71, 44]]", 
+    "confidence": 0.99
+    }],
+  "aspect": 4.7962466487935655},
+}
+```
+
