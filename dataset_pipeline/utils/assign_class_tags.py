@@ -1,4 +1,5 @@
 # File: assign_class_tags.py
+# Created by Juan A. Rodriguez on 02/11/2022
 # Goal: asign class tags to each figure from texts, and plot statistics
 
 import argparse

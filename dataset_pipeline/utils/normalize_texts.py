@@ -12,9 +12,12 @@ ROOT_PATH = args.path_data
 
 def normalize_caption(text):
     lower_string = text.lower()
-    no_number_string = re.sub(r'\d+', 'NUM-TK', lower_string)
-    no_punc_string = re.sub(r'[^\w\s]', '', no_number_string)
-    no_wspace_string = no_punc_string.strip()
+    citation_token_string = re.sub(r'\[.+\]', 'citation-tk', lower_string) # Manage citations
+    number_token_string = re.sub(r'[+-]?((\d+(\.\d+)?)|(\.\d+)|(\d[-/]\d))[ .:\n,]', 'number-tk ', citation_token_string) # Manage numbers TODO: Revise this
+    no_weird_dots = re.sub(r' +\.', '.', number_token_string) # Manage weird dots
+    no_weird_symbols = re.sub(r'(• ?)|(@)', '', no_weird_dots) # Manage weird symbols
+    no_double_spaces = re.sub(r'  ', ' ', no_weird_symbols) # Manage double spaces
+    no_wspace_string = no_double_spaces.strip()
     return no_wspace_string
 
 

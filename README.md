@@ -96,8 +96,8 @@ In this step we apply heuristic rules to filter images (avoid results figures li
 python dataset_pipeline/apply_heuristics.py -p <dataset dir>
 ```
 
-## 4. Perform OCR over Figures
-In this step we process the final set of firures with [EasyOCR](https://github.com/JaidedAI/EasyOCR) text recognizer.
+## 4. Perform OCR text recognition over Figures
+In this step we process the final set of figures with [EasyOCR](https://github.com/JaidedAI/EasyOCR) text recognizer.
 
 ```
 pip install easyocr
@@ -117,12 +117,13 @@ In Paper2Fig, each figure has a json object associated that contains the followi
 {
   "figure_id": "...", 
   "captions": ["...", "..."], 
+  "captions_norm": ["...", "..."], 
   "ocr_result": [{
     "text": "...", 
     "bbox": "[[71, 18], [134, 18], [134, 44], [71, 44]]", 
     "confidence": 0.99
     }],
-  "aspect": 4.7962466487935655},
+  "aspect": 4.7962466487935655}
 }
 ```
 

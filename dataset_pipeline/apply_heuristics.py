@@ -1,4 +1,5 @@
 # File: apply_heuristics.py
+# Created by Juan A. Rodriguez on 02/11/2022
 # Goal: (Step 3) - Apply heuristic rules to filter figures and extract text captions
 # Output: At the end of this process you will have a directory 'figures' with all figures, 
 # and another 'json_data' that stores a json for each paper with the metadata of the figures selected from that paper.

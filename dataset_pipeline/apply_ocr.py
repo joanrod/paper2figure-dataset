@@ -1,4 +1,5 @@
 # File: apply_ocr.py
+# Created by Juan A. Rodriguez on 02/11/2022
 # Goal: (Step 5) - Perform ocr over images to extract texts and bounding boxes
 # Output: At the end, you will have a directory
 

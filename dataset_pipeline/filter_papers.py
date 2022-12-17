@@ -1,4 +1,5 @@
 # File: filter_papers.py
+# Created by Juan A. Rodriguez on 02/11/2022
 # Goal: (Step 1.1) - Filter desired papers from arxiv using the kaggle dataset paper metadata
 
 import argparse

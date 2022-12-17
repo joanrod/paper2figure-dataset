@@ -1,4 +1,5 @@
 # File: word_frequency_analysis_tags.py
+# Created by Juan A. Rodriguez on 02/11/2022
 # Goal: Extract most frequent words in captions, ignoring a large list of stop words.
 # Iteratively (manually) add stopwords that are not related to ML methods or achitectures
 

@@ -1,4 +1,5 @@
 # File: construct_dataset.py
+# Created by Juan A. Rodriguez on 02/11/2022
 # Goal: (Step 4) - Perform the split of the dataset and store in train and val json files
 # Output: At the end of this process you will have a directory 'json_data' with text pairs 
 # and metadata for each figure in json format (on json per figure) 
@@ -15,6 +16,7 @@ parser.add_argument('-p', '--path_data', type=str, default=None, required=True,
                     help='Path where the data is stored')
 args = parser.parse_args()
 
+# TODO: Update this to use correct paths an logic from construct_dataset_rm.py
 
 def main():
     ROOT_PATH = args.path_data
