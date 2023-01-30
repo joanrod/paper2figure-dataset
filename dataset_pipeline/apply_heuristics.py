@@ -87,7 +87,7 @@ def retrieve_text_for_figure(figure, paper, caption):
 
     # Get figure number
     figure_num = figure['name']
-
+    
     # Prepare strings to look in the paper referencing this figure
     figure_names = [f'fig {figure_num}', f'fig. {figure_num}',
                     f'fig{figure_num}', f'fig.{figure_num}',

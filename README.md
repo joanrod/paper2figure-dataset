@@ -104,7 +104,13 @@ pip install easyocr
 python dataset_pipeline/apply_ocr.py -p <dataset dir>
 ```
 
-## 4. Construct Paper2Fig dataset
+## 5. Extract class tags from strings
+Here we 
+```
+python dataset_pipeline/assign_class_tags.py -p <dataset dir>
+```
+
+## 6. Construct Paper2Fig dataset
 Now it's time to put it all together, generating the final dataset using a JSON structure. Also, the split of the dataset in train and test is performed with:
 
 ```
@@ -123,7 +129,7 @@ In Paper2Fig, each figure has a json object associated that contains the followi
     "bbox": "[[71, 18], [134, 18], [134, 44], [71, 44]]", 
     "confidence": 0.99
     }],
-  "aspect": 4.7962466487935655}
+  "aspect": 4.7962466487935655
 }
 ```
 

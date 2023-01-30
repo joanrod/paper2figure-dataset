@@ -10,6 +10,7 @@ import os
 from tqdm import tqdm
 import random
 
+# Deprecated, merge from _rm version
 # Argument parsing
 parser = argparse.ArgumentParser()
 parser.add_argument('-p', '--path_data', type=str, default=None, required=True,
